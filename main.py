@@ -61,8 +61,10 @@ bat= sprites.create(img("""
     . . . f f f f f f f . . . . . .
     . . . . . . . . . . . . . . . .
 """))
-if knight.overlaps_with(bat):
+bat.set_position(90, 132)
+def on_overlap(sprite, otherSprite):
     info.change_life_by(-1)
+sprites.on_overlap(SpriteKind.player, SpriteKind.player, on_overlap)
 scene.set_tile_map(img("""
     ..................................................
     ..................................................
@@ -72,7 +74,7 @@ scene.set_tile_map(img("""
     ...................................333.....2......
     .................................3......3..3......
     ......5.................5.......33............55.1
-    .....d..........2.....d........333...............1
+    ................2..............333...............1
     ccccccccccc...cccccccccccccccccccc..........cccccc
     ccccccccccc444cccccccccccccccccccc4444444444cccccc
     cccccccccccccccccccccccccccccccccccccccccccccccccc
@@ -122,24 +124,6 @@ scene.set_tile(4, img("""
     4 5 4 4 4 4 5 5 5 5 4 2 4 2 2 4
     4 5 5 5 5 5 5 4 4 4 2 4 2 4 2 4
     4 5 5 5 4 4 4 4 2 2 2 2 4 2 4 4
-"""))
-scene.set_tile(13, img("""
-    . . f f f . . . . . . . . . . .
-    f f f c c . . . . . . . . f f f
-    f f c c c . c c . . . f c b b c
-    f f c 3 c c 3 c c f f b b b c .
-    f f c 3 b c 3 b c f b b c c c .
-    f c b b b b b b c f b c b c c .
-    c c 1 b b b 1 b c b b c b b c .
-    c b b b b b b b b b c c c b c .
-    c b 1 f f 1 c b b c c c c c . .
-    c f 1 f f 1 f b b b b f c . . .
-    f f f f f f f b b b b f c . . .
-    f f 2 2 2 2 f b b b b f c c . .
-    . f 2 2 2 2 2 b b b c f . . . .
-    . . f 2 2 2 b b b c f . . . . .
-    . . . f f f f f f f . . . . . .
-    . . . . . . . . . . . . . . . .
 """))
 scene.set_tile(2, img("""
     . . . . . . . . . . . . . . . .
