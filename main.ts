@@ -2,40 +2,55 @@
 Title: Knight vs Rats
 Creators: Piper and Kaitlyn
 Description: In this game, the player is a knight and your goal 
-is to kill 
+is to kill and earn points
 
  */
 //  On Start 
 info.setLife(3)
 info.setScore(0)
 let knight = sprites.create(img`
-    . . . . 3 3 3 3 3 3 . . . . . .
-    . . . . 3 . . . . 3 . . . . . .
-    . . . 3 3 . . . . 3 . . . . . .
-    . . . 3 3 3 3 . . 3 . . . . . .
-    . . . . . . 3 3 3 3 . . . . . .
-    . . . . . . 3 3 . . . . . . . .
-    . . . . . . 3 3 . . . . . . . .
-    . . . . . . 3 3 . . . . . . . .
-    . . . . . 3 3 3 . . . . . . . .
-    . . . . . 3 3 3 . . . . . . . .
-    . . . . . 3 . 3 . . . . . . . .
-    . . . . 3 3 . 3 . . . . . . . .
-    . . . . 3 . . 3 . . . . . . . .
-    . . . . 3 . . 3 3 . . . . . . .
-    . . . 3 3 . . . 3 . . . . . . .
-    . . . 3 . . . . 3 3 . . . . . .
+    ....................
+    ....................
+    ....................
+    ....................
+    ....................
+    ....................
+    ...ff.ffffff........
+    ..f33fbbccccf.......
+    ..f3fbbcbbbbcf......
+    ...ffbcbfbbfbf......
+    ...fbcbbfbbfbf......
+    ...fbcbbfbbfbf......
+    ....ffbbfbbfbf......
+    ...fffbbbbbbbf......
+    ..fcbbfbbbbbf.......
+    .fbcbcbffffff.......
+    .fffffbbbcccf.......
+    ..fccfbbbbbcf.......
+    ..fcbfbbbbbff.......
+    ..fbbbfbbbcfbf......
+    ..fbbcfbcccfcf......
+    ..fbccfbffffcf......
+    ...fffbbbfbff.......
+    .....fbbbfbf........
+    ....fbbbbfbf........
+    ....fbbccfcf........
+    ....fcccccfcf.......
+    ....fffffffff.......
+    ....................
+    ....................
 `)
-knight.setPosition(45, 136)
-controller.moveSprite(knight)
+knight.setPosition(45, 132)
+controller.moveSprite(knight, 100, 0)
+knight.ay = 100
 scene.cameraFollowSprite(knight)
 scene.setTileMap(img`
     ..................................................
     ..................................................
     ..................................................
     ..................................................
-    .................................5.333............
-    ...........................................2......
+    .................................5................
+    ...................................333.....2......
     .................................3......3..3......
     ......5.................5.......33............55.1
     .....d..........2.....d........333...............1
@@ -70,7 +85,7 @@ scene.setTile(12, img`
     a a c c a a a a a a c c a a a a
     c c c c c c c c c c c c c c c c
     c c c c c c c c c c c c c c c c
-`)
+`, true)
 scene.setTile(4, img`
     5 4 4 5 5 4 4 4 4 2 2 2 4 4 4 4
     4 4 4 4 4 5 5 4 2 2 2 2 4 4 4 5
@@ -125,21 +140,37 @@ scene.setTile(2, img`
     . . . . . . . . . . . . . . . .
     . . . . . . . . . . . . . . . .
 `)
-let bat = sprites.create(img`
-    . . f f f . . . . . . . . f f f
-    . f f c c . . . . . . f c b b c
-    f f c c . . . . . . f c b b c .
-    f c f c . . . . . . f b c c c .
-    f f f c c . c c . f c b b c c .
-    f f c 3 c c 3 c c f b c b b c .
-    f f b 3 b c 3 b c f b c c b c .
-    . c 1 b b b 1 b c b b c c c . .
-    . c 1 b b b 1 b b c c c c . . .
-    c b b b b b b b b b c c . . . .
-    c b 1 f f 1 c b b b b f . . . .
-    f f 1 f f 1 f b b b b f c . . .
-    f f 2 2 2 2 f b b b b f c c . .
-    . f 2 2 2 2 b b b b c f . . . .
-    . . f b b b b b b c f . . . . .
-    . . . f f f f f f f . . . . . .
-`)
+scene.setTile(3, img`
+    b d d d d d d c b d d d d d d c
+    d b b b b b b c d b b b b b c c
+    d b b b b b b c d b b b b c b c
+    d b b b b b b c d b b b d d b c
+    d b b b b b b c d b b c b b b c
+    d b b b b b b c d b c c b b b c
+    d b b b b b b b d b c c b b b b
+    c c c c c c b a c c c c c c b a
+    b d d d d d d c b d d d d d d c
+    d b b b b b b c d b b b b b b c
+    d b b b b b b c d b b b b b b c
+    d b b b b b b c d b b b b b b c
+    d b b b b b c c d b b b b b b c
+    d b b b b c c c d b b b b b b c
+    d b b b b c c b d b b b b b b b
+    c c c c c c c a c c c c c c c a
+`, true)
+let canDoubleJump = true
+controller.A.onEvent(ControllerButtonEvent.Pressed, function jump() {
+    
+    if (canDoubleJump) {
+        knight.vy = -50
+        canDoubleJump = knight.isHittingTile(CollisionDirection.Bottom)
+    }
+    
+})
+game.onUpdate(function on_update() {
+    
+    if (knight.isHittingTile(CollisionDirection.Bottom)) {
+        canDoubleJump = true
+    }
+    
+})
