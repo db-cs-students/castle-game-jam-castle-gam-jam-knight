@@ -6,7 +6,8 @@ is to kill and earn points
 """
 # On Start 
 info.set_life(3) 
-info.set_score(0)
+info.set_score(0) 
+# Player
 knight= sprites.create(img("""
     ....................
     ....................
@@ -38,11 +39,13 @@ knight= sprites.create(img("""
     ....fffffffff.......
     ....................
     ....................
-"""))
+""")) 
+knight.set_kind(SpriteKind.player)
 knight.set_position(45, 132)
 controller.move_sprite(knight, 100, 0)
 knight.ay = 100
-scene.camera_follow_sprite(knight)
+scene.camera_follow_sprite(knight) 
+# Enemy
 bat= sprites.create(img("""
     . . f f f . . . . . . . . . . .
     f f f c c . . . . . . . . f f f
@@ -60,11 +63,37 @@ bat= sprites.create(img("""
     . . f 2 2 2 b b b c f . . . . .
     . . . f f f f f f f . . . . . .
     . . . . . . . . . . . . . . . .
+""")) 
+bat.set_kind(SpriteKind.enemy) 
+bat.set_position(90, 132) 
+
+bat2=sprites.create(img("""
+    . f f f . . . . . . . . f f f .
+    f f c . . . . . . . f c b b c .
+    f c c . . . . . . f c b b c . .
+    c f . . . . . . . f b c c c . .
+    c f f . . . . . f f b b c c . .
+    f f f c c . c c f b c b b c . .
+    f f f c c c c c f b c c b c . .
+    . f c 3 c c 3 b c b c c c . . .
+    . c b 3 b c 3 b b c c c c . . .
+    c c b b b b b b b b c c . . . .
+    c 1 1 b b b 1 1 b b b f c . . .
+    f b b b b b b b b b b f c c . .
+    f b c b b b c b b b b f . . . .
+    . f 1 f f f 1 b b b c f . . . .
+    . . f b b b b b b c f . . . . .
+    . . . f f f f f f f . . . . . .
 """))
-bat.set_position(90, 132)
-def on_overlap(sprite, otherSprite):
+bat2.set_kind(SpriteKind.enemy)
+bat2.set_position(375,132)
+
+
+# Lose Life
+def on_overlap(SpriteKind, OtherSpriteKind):
     info.change_life_by(-1)
-sprites.on_overlap(SpriteKind.player, SpriteKind.player, on_overlap)
+sprites.on_overlap(SpriteKind.player, SpriteKind.enemy, on_overlap)
+# Tilemap
 scene.set_tile_map(img("""
     ..................................................
     ..................................................
@@ -162,7 +191,7 @@ scene.set_tile(3, img("""
     c c c c c c c a c c c c c c c a
 """), True) 
 
-
+# Jump/DoubleJump
 canDoubleJump = True
 def jump():
     global canDoubleJump

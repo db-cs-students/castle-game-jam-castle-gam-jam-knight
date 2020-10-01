@@ -8,6 +8,7 @@ is to kill and earn points
 //  On Start 
 info.setLife(3)
 info.setScore(0)
+//  Player
 let knight = sprites.create(img`
     ....................
     ....................
@@ -40,10 +41,12 @@ let knight = sprites.create(img`
     ....................
     ....................
 `)
+knight.setKind(SpriteKind.Player)
 knight.setPosition(45, 132)
 controller.moveSprite(knight, 100, 0)
 knight.ay = 100
 scene.cameraFollowSprite(knight)
+//  Enemy
 let bat = sprites.create(img`
     . . f f f . . . . . . . . . . .
     f f f c c . . . . . . . . f f f
@@ -62,10 +65,33 @@ let bat = sprites.create(img`
     . . . f f f f f f f . . . . . .
     . . . . . . . . . . . . . . . .
 `)
+bat.setKind(SpriteKind.Enemy)
 bat.setPosition(90, 132)
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Player, function on_overlap(sprite: Sprite, otherSprite: Sprite) {
+let bat2 = sprites.create(img`
+    . f f f . . . . . . . . f f f .
+    f f c . . . . . . . f c b b c .
+    f c c . . . . . . f c b b c . .
+    c f . . . . . . . f b c c c . .
+    c f f . . . . . f f b b c c . .
+    f f f c c . c c f b c b b c . .
+    f f f c c c c c f b c c b c . .
+    . f c 3 c c 3 b c b c c c . . .
+    . c b 3 b c 3 b b c c c c . . .
+    c c b b b b b b b b c c . . . .
+    c 1 1 b b b 1 1 b b b f c . . .
+    f b b b b b b b b b b f c c . .
+    f b c b b b c b b b b f . . . .
+    . f 1 f f f 1 b b b c f . . . .
+    . . f b b b b b b c f . . . . .
+    . . . f f f f f f f . . . . . .
+`)
+bat2.setKind(SpriteKind.Enemy)
+bat2.setPosition(375, 132)
+//  Lose Life
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function on_overlap(SpriteKind: Sprite, OtherSpriteKind: Sprite) {
     info.changeLifeBy(-1)
 })
+//  Tilemap
 scene.setTileMap(img`
     ..................................................
     ..................................................
@@ -162,6 +188,7 @@ scene.setTile(3, img`
     d b b b b c c b d b b b b b b b
     c c c c c c c a c c c c c c c a
 `, true)
+//  Jump/DoubleJump
 let canDoubleJump = true
 controller.A.onEvent(ControllerButtonEvent.Pressed, function jump() {
     
