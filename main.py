@@ -88,11 +88,55 @@ bat2=sprites.create(img("""
 bat2.set_kind(SpriteKind.enemy)
 bat2.set_position(375,132)
 
+# Coins 
+coin = sprites.create(img("""
+    . . b b b b . .
+    . b 5 5 5 5 b .
+    b 5 d 3 3 d 5 b
+    b 5 3 5 5 1 5 b
+    c 5 3 5 5 1 d c
+    c d d 1 1 d d c
+    . f d d d d f .
+    . . f f f f . .
+""")) 
+coin.set_kind(SpriteKind.food)
+def on_overlap3(sprite, otherSprite):
+    coin.destroy()
+    info.change_score_by(1)
+sprites.on_overlap(SpriteKind.player, SpriteKind.food, on_overlap3)
 
 # Lose Life
-def on_overlap(SpriteKind, OtherSpriteKind):
+def on_overlap(sprite, otherSprite):
+    sprite.set_position(knight.x - 30, knight.y-20)
+    scene.camera_shake()
     info.change_life_by(-1)
+
+def on_button_event_b_pressed():
+    projectile = sprites.create_projectile_from_sprite(img("""
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . d d . . . . . .
+        . . . . . . . d b d . . . . . .
+        . . . . f . d b d . . . . . . .
+        . . . . . f d d . . . . . . . .
+        . . . . f f f . . . . . . . . .
+        . . . f f f . f . . . . . . . .
+        . . . 3 f . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+    """), knight, 50, 0)
+controller.player1.on_button_event(ControllerButton.B, ControllerButtonEvent.PRESSED, on_button_event_b_pressed)
 sprites.on_overlap(SpriteKind.player, SpriteKind.enemy, on_overlap)
+
+def on_overlap2(sprite, otherSprite):
+    otherSprite.destroy()
+sprites.on_overlap(SpriteKind.projectile, SpriteKind.enemy, on_overlap2)
+
 # Tilemap
 scene.set_tile_map(img("""
     ..................................................
@@ -109,14 +153,14 @@ scene.set_tile_map(img("""
     cccccccccccccccccccccccccccccccccccccccccccccccccc
 """))
 scene.set_tile(5, img("""
-    . . b b b b . .
-    . b 5 5 5 5 b .
-    b 5 d 3 3 d 5 b
-    b 5 3 5 5 1 5 b
-    c 5 3 5 5 1 d c
-    c d d 1 1 d d c
-    . f d d d d f .
-    . . f f f f . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
 """))
 scene.set_tile(12, img("""
     a a a c c a a a a a a c c a a a
@@ -190,6 +234,7 @@ scene.set_tile(3, img("""
     d b b b b c c b d b b b b b b b
     c c c c c c c a c c c c c c c a
 """), True) 
+scene.place_on_random_tile(coin, 5)
 
 # Jump/DoubleJump
 canDoubleJump = True

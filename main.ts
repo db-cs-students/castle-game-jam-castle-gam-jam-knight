@@ -87,9 +87,50 @@ let bat2 = sprites.create(img`
 `)
 bat2.setKind(SpriteKind.Enemy)
 bat2.setPosition(375, 132)
+//  Coins 
+let coin = sprites.create(img`
+    . . b b b b . .
+    . b 5 5 5 5 b .
+    b 5 d 3 3 d 5 b
+    b 5 3 5 5 1 5 b
+    c 5 3 5 5 1 d c
+    c d d 1 1 d d c
+    . f d d d d f .
+    . . f f f f . .
+`)
+coin.setKind(SpriteKind.Food)
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function on_overlap3(sprite: Sprite, otherSprite: Sprite) {
+    coin.destroy()
+    info.changeScoreBy(1)
+})
 //  Lose Life
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function on_overlap(SpriteKind: Sprite, OtherSpriteKind: Sprite) {
+controller.player1.onButtonEvent(ControllerButton.B, ControllerButtonEvent.Pressed, function on_button_event_b_pressed() {
+    let projectile = sprites.createProjectileFromSprite(img`
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . d d . . . . . .
+        . . . . . . . d b d . . . . . .
+        . . . . f . d b d . . . . . . .
+        . . . . . f d d . . . . . . . .
+        . . . . f f f . . . . . . . . .
+        . . . f f f . f . . . . . . . .
+        . . . 3 f . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+    `, knight, 50, 0)
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function on_overlap(sprite: Sprite, otherSprite: Sprite) {
+    sprite.setPosition(knight.x - 30, knight.y - 20)
+    scene.cameraShake()
     info.changeLifeBy(-1)
+})
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function on_overlap2(sprite: Sprite, otherSprite: Sprite) {
+    otherSprite.destroy()
 })
 //  Tilemap
 scene.setTileMap(img`
@@ -107,14 +148,14 @@ scene.setTileMap(img`
     cccccccccccccccccccccccccccccccccccccccccccccccccc
 `)
 scene.setTile(5, img`
-    . . b b b b . .
-    . b 5 5 5 5 b .
-    b 5 d 3 3 d 5 b
-    b 5 3 5 5 1 5 b
-    c 5 3 5 5 1 d c
-    c d d 1 1 d d c
-    . f d d d d f .
-    . . f f f f . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
+    . . . . . . . .
 `)
 scene.setTile(12, img`
     a a a c c a a a a a a c c a a a
@@ -188,6 +229,7 @@ scene.setTile(3, img`
     d b b b b c c b d b b b b b b b
     c c c c c c c a c c c c c c c a
 `, true)
+scene.placeOnRandomTile(coin, 5)
 //  Jump/DoubleJump
 let canDoubleJump = true
 controller.A.onEvent(ControllerButtonEvent.Pressed, function jump() {
