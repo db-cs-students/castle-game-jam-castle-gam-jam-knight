@@ -162,7 +162,6 @@ scene.set_tile(3, img("""
     c c c c c c c a c c c c c c c a
 """), True) 
 
-
 canDoubleJump = True
 def jump():
     global canDoubleJump
