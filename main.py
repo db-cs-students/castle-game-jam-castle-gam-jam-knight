@@ -234,7 +234,7 @@ door = sprites.create(img("""
     . . c f b e e e e e e e e 1 . .
     . . c f b e e e e e e e e 1 . .
     . . c f b e e e e e e e e 1 . .
-"""))
+""")) 
 tiles.place_on_random_tile(None, img("""
     . . . . c c c c c c c c . . . .
     . . . c f f b e e e e e 1 . . .
