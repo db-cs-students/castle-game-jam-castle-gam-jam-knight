@@ -343,6 +343,7 @@ knight_idle.addAnimationFrame(img`
     ....................
 `)
 animation.attachAnimation(knight, knight_idle)
+//  Unfinished animation
 let knight_run_left = animation.createAnimation(animation._actionEnumShim(0), 750)
 knight_idle.addAnimationFrame(img`
     ....................

@@ -343,7 +343,8 @@ knight_idle.add_animation_frame(img("""
     ....................
 """))
 animation.attach_animation(knight, knight_idle)
-
+ 
+ # Unfinished animation
 knight_run_left = animation.create_animation(animation._action_enum_shim(0), 750)
 knight_idle.add_animation_frame(img("""
     ....................
