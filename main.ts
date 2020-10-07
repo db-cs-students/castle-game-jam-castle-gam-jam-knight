@@ -174,7 +174,6 @@ let knight = sprites.create(img`
 `)
 knight.setKind(SpriteKind.Player)
 knight.setPosition(45, 132)
-knight.setFlag(SpriteFlag.ShowPhysics, true)
 controller.moveSprite(knight, 100, 0)
 knight.ay = 100
 scene.cameraFollowSprite(knight)
