@@ -173,7 +173,6 @@ knight= sprites.create(img("""
 """)) 
 knight.set_kind(SpriteKind.player)
 knight.set_position(45, 132)
-
 controller.move_sprite(knight, 100, 0)
 knight.ay = 100
 scene.camera_follow_sprite(knight)
